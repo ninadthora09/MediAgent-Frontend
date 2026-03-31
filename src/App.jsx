@@ -20,7 +20,7 @@ const App = () => {
 
     try {
       setLoading(true);
-      const response = await fetch(`${import.meta.env.BACKEND_API_URL}/chat`, {
+      const response = await fetch("https://mediagent-backend.onrender.com/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
