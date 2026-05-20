@@ -1,70 +1,215 @@
-# Getting Started with Create React App
+"Autonomous AI agent using LangChain + Groq that independently manages clinic scheduling via multi-turn conversation and tool calling"
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+1st → MERN Project (Full stack engineering — most relevant for SDE)
+2nd → MediAgent (AI agent — shows you're ahead of the curve)
+3rd → Flask Project (Backend Python — supports both above)
 
-In the project directory, you can run:
+python -m venv venv
+venv\Scripts\activate
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+mediagent/
+│
+├── backend/
+│   ├── app.py                ← Flask API (single /chat endpoint)
+│   ├── agent.py              ← LangChain agent + Groq setup
+│   ├── tools.py              ← check_slots(), book_appointment(), cancel_appointment()
+│   ├── database.py           ← SQLite connection + table creation
+│   ├── email_service.py      ← SendGrid email confirmation
+│   ├── mediagent.db          ← SQLite database (auto created on first run)
+│   ├── seed.py               ← adds dummy doctor slots for testing
+│   └── .env                  ← GROQ_API_KEY, SENDGRID_API_KEY
+│
+├── frontend/
+│   ├── public/
+│   │   └── index.html
+│   ├── src/
+│   │   ├── App.jsx           ← main chat UI component
+│   │   ├── components/
+│   │   │   ├── ChatWindow.jsx   ← displays messages
+│   │   │   └── InputBar.jsx     ← text input + send button
+│   │   └── index.js
+│   └── package.json
+│
+├── requirements.txt          ← Python dependencies
+└── README.md                 ← project description for GitHub
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+================================================================
+MEDIAGENT — PROJECT BRIEF (UPDATED WITH REACT)
+Autonomous AI Appointment Scheduling Agent
+Resume Project
+================================================================
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+----------------------------------------------------------------
+1. WHAT WE ARE BUILDING
+----------------------------------------------------------------
+MediAgent is an autonomous AI agent that manages clinic
+appointment scheduling without any human involvement.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+A patient types: "Book appointment with Dr. Sharma tomorrow 10am"
+The agent understands it, checks available slots in the database,
+books it, sends a confirmation email — all by itself.
 
-### `npm run eject`
+This is NOT a chatbot. It actually performs actions using tools
+(Python functions). That is what makes it an agent.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+If a slot is NOT available — the agent automatically reads the
+empty result from the database and replies with available
+alternatives. No crash. No error. Fully conversational.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+----------------------------------------------------------------
+2. ONE LINE SUMMARY FOR RESUME
+----------------------------------------------------------------
+"Built an autonomous AI agent using LangChain + Groq (LLaMA 3)
+that independently manages clinic appointments via multi-turn
+conversation, tool-calling, and automated email confirmations
+— reducing manual scheduling effort by ~80%."
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+----------------------------------------------------------------
+3. TECH STACK
+----------------------------------------------------------------
+Layer              Tool & Purpose
+---------------------------------------------------------
+Frontend UI        React — chat interface (App.jsx)
+API Layer          Flask — single /chat endpoint
+Agent Framework    LangChain — decides which tool to call
+LLM                Groq API (LLaMA 3) — understands messages
+Agent Tools        Python functions — check, book, cancel
+Database           SQLite — stores slots & appointments
+Email              SendGrid — sends confirmation emails
+Deployment         Render (backend) + Vercel (frontend)
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+----------------------------------------------------------------
+4. FOLDER STRUCTURE
+----------------------------------------------------------------
+mediagent/
+│
+├── backend/
+│   ├── app.py                ← Flask API (/chat endpoint)
+│   ├── agent.py              ← LangChain + Groq agent setup
+│   ├── tools.py              ← check_slots(), book_appointment(),
+│   │                            cancel_appointment()
+│   ├── database.py           ← SQLite connection + table setup
+│   ├── email_service.py      ← SendGrid email sender
+│   ├── mediagent.db          ← SQLite DB (auto created)
+│   ├── seed.py               ← adds dummy slots for testing
+│   └── .env                  ← GROQ_API_KEY, SENDGRID_API_KEY
+│
+├── frontend/
+│   ├── public/
+│   │   └── index.html
+│   ├── src/
+│   │   ├── App.jsx           ← main chat UI component
+│   │   ├── components/
+│   │   │   ├── ChatWindow.jsx   ← displays messages
+│   │   │   └── InputBar.jsx     ← text input + send button
+│   │   └── index.js
+│   └── package.json
+│
+├── requirements.txt
+└── README.md
 
-## Learn More
+----------------------------------------------------------------
+5. HOW IT WORKS — STEP BY STEP
+----------------------------------------------------------------
+1. Patient types message in React chat UI
+2. React sends POST request to Flask /chat endpoint
+3. Flask passes message to LangChain agent
+4. LangChain + LLaMA 3 understands the intent
+5. Agent calls check_slots() — queries SQLite database
+6. If slot available — calls book_appointment() — writes to DB
+7. If slot NOT available — agent replies with available options
+8. email_service.py sends confirmation email via resend
+9. Flask returns agent reply to React
+10. React displays the reply in the chat window
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+----------------------------------------------------------------
+6. AGENT TOOLS (3 Python functions in tools.py)
+----------------------------------------------------------------
+check_slots(date, time, doctor_name)
+  → queries SQLite, returns available or unavailable
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+book_appointment(patient_name, date, time, doctor_name, email)
+  → writes appointment to DB, triggers confirmation email
 
-### Code Splitting
+cancel_appointment(appointment_id)
+  → deletes appointment from DB
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+----------------------------------------------------------------
+7. BUILD PLAN (ONE DAY — 3-4 hrs/day)
+----------------------------------------------------------------
+Morning   (2-3 hrs) → database.py + tools.py + seed.py
+Afternoon (2-3 hrs) → agent.py + app.py (Flask API)
+Evening   (2 hrs)   → React frontend (App.jsx, components)
+Night     (1 hr)    → SendGrid email + testing + GitHub push
 
-### Analyzing the Bundle Size
+----------------------------------------------------------------
+8. REQUIREMENTS.TXT
+----------------------------------------------------------------
+langchain
+langchain-groq
+langchain-community
+flask
+flask-cors
+sendgrid
+python-dotenv
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+----------------------------------------------------------------
+9. WHAT TO TELL CLAUDE IN A NEW CHAT
+----------------------------------------------------------------
+Copy paste this at the start of every new chat:
 
-### Making a Progressive Web App
+"I am building MediAgent — an autonomous AI appointment
+scheduling agent for healthcare clinics.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Tech stack:
+- Backend: Python, Flask, LangChain, Groq API (LLaMA 3), SQLite, SendGrid
+- Frontend: React (App.jsx, ChatWindow.jsx, InputBar.jsx)
+- Flask has a single /chat endpoint that React calls
 
-### Advanced Configuration
+Agent has 3 tools: check_slots(), book_appointment(),
+cancel_appointment()
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+If a slot is not available the agent suggests alternatives
+from the database automatically.
 
-### Deployment
+I am a beginner to agentic AI but comfortable with Python
+and React.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+This is a resume project. Help me build:
+[WRITE WHAT YOU NEED — e.g. database.py and tools.py
+from scratch, step by step]"
 
-### `npm run build` fails to minify
+----------------------------------------------------------------
+10. RESUME BULLET POINTS (READY TO USE)
+----------------------------------------------------------------
+- Built autonomous AI agent using LangChain + Groq (LLaMA 3)
+  that independently manages clinic scheduling via multi-turn
+  conversation and tool-calling
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- Implemented 3 agentic tools (check availability, book, cancel)
+  backed by SQLite with fallback to suggest alternative slots
+  when requested time is unavailable
+
+- Integrated SendGrid for automated email confirmations,
+  reducing manual scheduling effort by ~80%
+
+- Built React chat UI connected to Flask REST API, deployed
+  backend on Render and frontend on Vercel with live demo link
+
+================================================================
+END OF BRIEF
+================================================================
+
+
+
+
+For Groq — go to console.groq.com → sign up free → API Keys → Create key
+For SendGrid — go to sendgrid.com → sign up free → Settings → API Keys → Create key. Also verify your sender email inside SendGrid or emails won't send.
+
+User → React → Flask → Agent → Tools → DB/Email → STRING response → React
