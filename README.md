@@ -5,39 +5,6 @@
 2nd → MediAgent (AI agent — shows you're ahead of the curve)
 3rd → Flask Project (Backend Python — supports both above)
 
-python -m venv venv
-venv\Scripts\activate
-
-
-mediagent/
-│
-├── backend/
-│   ├── app.py                ← Flask API (single /chat endpoint)
-│   ├── agent.py              ← LangChain agent + Groq setup
-│   ├── tools.py              ← check_slots(), book_appointment(), cancel_appointment()
-│   ├── database.py           ← SQLite connection + table creation
-│   ├── email_service.py      ← SendGrid email confirmation
-│   ├── mediagent.db          ← SQLite database (auto created on first run)
-│   ├── seed.py               ← adds dummy doctor slots for testing
-│   └── .env                  ← GROQ_API_KEY, SENDGRID_API_KEY
-│
-├── frontend/
-│   ├── public/
-│   │   └── index.html
-│   ├── src/
-│   │   ├── App.jsx           ← main chat UI component
-│   │   ├── components/
-│   │   │   ├── ChatWindow.jsx   ← displays messages
-│   │   │   └── InputBar.jsx     ← text input + send button
-│   │   └── index.js
-│   └── package.json
-│
-├── requirements.txt          ← Python dependencies
-└── README.md                 ← project description for GitHub
-
-
-
-
 
 ================================================================
 MEDIAGENT — PROJECT BRIEF (UPDATED WITH REACT)
@@ -83,36 +50,6 @@ Agent Tools        Python functions — check, book, cancel
 Database           SQLite — stores slots & appointments
 Email              SendGrid — sends confirmation emails
 Deployment         Render (backend) + Vercel (frontend)
-
-----------------------------------------------------------------
-4. FOLDER STRUCTURE
-----------------------------------------------------------------
-mediagent/
-│
-├── backend/
-│   ├── app.py                ← Flask API (/chat endpoint)
-│   ├── agent.py              ← LangChain + Groq agent setup
-│   ├── tools.py              ← check_slots(), book_appointment(),
-│   │                            cancel_appointment()
-│   ├── database.py           ← SQLite connection + table setup
-│   ├── email_service.py      ← SendGrid email sender
-│   ├── mediagent.db          ← SQLite DB (auto created)
-│   ├── seed.py               ← adds dummy slots for testing
-│   └── .env                  ← GROQ_API_KEY, SENDGRID_API_KEY
-│
-├── frontend/
-│   ├── public/
-│   │   └── index.html
-│   ├── src/
-│   │   ├── App.jsx           ← main chat UI component
-│   │   ├── components/
-│   │   │   ├── ChatWindow.jsx   ← displays messages
-│   │   │   └── InputBar.jsx     ← text input + send button
-│   │   └── index.js
-│   └── package.json
-│
-├── requirements.txt
-└── README.md
 
 ----------------------------------------------------------------
 5. HOW IT WORKS — STEP BY STEP
