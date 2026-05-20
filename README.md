@@ -6,11 +6,11 @@
 3rd → Flask Project (Backend Python — supports both above)
 
 
-================================================================
+
 MEDIAGENT — PROJECT BRIEF (UPDATED WITH REACT)
 Autonomous AI Appointment Scheduling Agent
 Resume Project
-================================================================
+
 
 ----------------------------------------------------------------
 1. WHAT WE ARE BUILDING
@@ -139,9 +139,9 @@ from scratch, step by step]"
 - Built React chat UI connected to Flask REST API, deployed
   backend on Render and frontend on Vercel with live demo link
 
-================================================================
+
 END OF BRIEF
-================================================================
+
 
 
 
